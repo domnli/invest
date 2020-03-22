@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'mtj-circle-plugin'
+
+def localPropertiesFile = rootProject.file("./local.properties")
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(localPropertiesFile))
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.0"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "pers.domnli.invest"
+        minSdkVersion 22
+        targetSdkVersion 29
+        versionCode 1
+        versionName "0.0.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    def qmui_arch_version = '2.0.0-alpha04'
+    implementation "com.qmuiteam:qmui:$qmui_arch_version"
+    implementation "com.qmuiteam:arch:$qmui_arch_version"
+    annotationProcessor "com.qmuiteam:arch-compiler:$qmui_arch_version"
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation 'com.haibin:calendarview:3.6.7'
+    def room_version = "2.2.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+
+}
+
+MtjCirclePluginConfig {
+    // 设置app key
+    appkey = localProperties['baidu.mtj.app.key']
+    // 设置debug 开关，如果需要查看日志则打开开关，为避免影响性能建议上线前关闭（设置为false）
+    debug = false
+    // 默认启动此插件，如果开发者不需要可以禁用（设置为false）
+    enabled = true
+}

@@ -1,0 +1,104 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "3b4ab55057f08f23b168f8cd030daf8c",
+    "entities": [
+      {
+        "tableName": "Bank",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bank` TEXT NOT NULL, `billingDay` INTEGER NOT NULL, `dueDay` INTEGER NOT NULL, `quota` INTEGER NOT NULL, PRIMARY KEY(`bank`))",
+        "fields": [
+          {
+            "fieldPath": "bank",
+            "columnName": "bank",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "billingDay",
+            "columnName": "billingDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDay",
+            "columnName": "dueDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quota",
+            "columnName": "quota",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "bank"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "LoanMonthly",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bank` TEXT NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, `tail` TEXT, `loan` TEXT NOT NULL, `repaid` INTEGER NOT NULL, PRIMARY KEY(`bank`, `year`, `month`))",
+        "fields": [
+          {
+            "fieldPath": "bank",
+            "columnName": "bank",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "month",
+            "columnName": "month",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tail",
+            "columnName": "tail",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "loan",
+            "columnName": "loan",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repaid",
+            "columnName": "repaid",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "bank",
+            "year",
+            "month"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b4ab55057f08f23b168f8cd030daf8c')"
+    ]
+  }
+}
