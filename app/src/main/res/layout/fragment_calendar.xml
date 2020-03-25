@@ -62,7 +62,7 @@
             android:id="@+id/fl_current"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_toLeftOf="@id/add_bank_fl"
+            android:layout_toLeftOf="@id/alarm_fl"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:background="@drawable/bg_ripple">
@@ -88,6 +88,22 @@
                 android:textSize="12sp"
                 tools:ignore="HardcodedText" />
         </FrameLayout>
+        <com.qmuiteam.qmui.layout.QMUIFrameLayout
+            android:id="@+id/alarm_fl"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_toLeftOf="@id/add_bank_fl"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg_ripple"
+            >
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_alarm"
+                android:layout_gravity="center"
+                />
+        </com.qmuiteam.qmui.layout.QMUIFrameLayout>
         <com.qmuiteam.qmui.layout.QMUIFrameLayout
             android:id="@+id/add_bank_fl"
             android:layout_width="32dp"

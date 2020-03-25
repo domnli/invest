@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.baidu.mobstat.StatService;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.SwipeBackLayout;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -26,6 +27,18 @@ public abstract class BaseFragment extends QMUIFragment {
 
 
     public BaseFragment() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        StatService.onPageStart(getContext(),getClass().getName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        StatService.onPageEnd(getContext(), getClass().getName());
     }
 
     @Override

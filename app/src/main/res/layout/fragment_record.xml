@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/app_content_bg_color"
+    android:clipChildren="false"
+    app:qmui_skin_background="?attr/app_skin_common_background_1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/qmui_topbar_height"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        android:background="@color/qmui_config_color_white"
+        android:gravity="center_horizontal"
+        >
+        <TextView
+            style="@style/QDCommonDescription"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="钱客通当前随机商户："
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/current_merchant"
+            style="@style/QDCommonDescription"
+            android:text="5094钟表首饰、5722电器、5732电子设备、5533汽配"
+            android:gravity="center"/>
+        <com.qmuiteam.qmui.widget.QMUIProgressBar
+            android:id="@+id/circleProgressBar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="0dp"
+            android:textColor="?attr/qmui_config_color_gray_4"
+            android:textSize="22sp"
+            app:qmui_background_color="?attr/qmui_config_color_gray_8"
+            app:qmui_progress_color="@color/qmui_config_color_red"
+            app:qmui_stroke_width="18dp"
+            app:qmui_type="type_circle" />
+
+        <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+            android:id="@+id/groupListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            />
+
+    </LinearLayout>
+
+
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topbar"
+        android:theme="@style/QDTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"/>
+
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

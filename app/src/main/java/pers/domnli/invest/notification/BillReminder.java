@@ -5,6 +5,8 @@ import android.content.Context;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import pers.domnli.invest.InvestApplication;
@@ -58,6 +60,7 @@ public class BillReminder {
 
         public void setBillingBanks(List<Bank> billingBanks) {
             this.billingBanks = billingBanks;
+            Collections.sort(this.billingBanks, (o1, o2) -> o1.getBillingDay().compareTo(o2.getBillingDay()));
         }
 
         public List<Bank> getDueBanks() {
@@ -66,6 +69,7 @@ public class BillReminder {
 
         public void setDueBanks(List<Bank> dueBanks) {
             this.dueBanks = dueBanks;
+            Collections.sort(this.dueBanks,(o1, o2) -> o1.getDueDay().compareTo(o2.getDueDay()));
         }
     }
 }

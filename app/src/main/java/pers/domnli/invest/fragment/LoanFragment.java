@@ -1,16 +1,15 @@
 package pers.domnli.invest.fragment;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +26,6 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,7 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import pers.domnli.invest.InvestApplication;
 import pers.domnli.invest.R;
 import pers.domnli.invest.base.BaseFragment;
 import pers.domnli.invest.repository.entity.LoanMonthly;
@@ -124,32 +121,36 @@ public class LoanFragment extends BaseFragment {
     }
 
     private void showTopBarList(View v) {
-        String[] listItems = new String[]{
-                "记帐"
-        };
-        List<String> data = new ArrayList<>();
 
-        Collections.addAll(data, listItems);
+        List<String> listItems = new ArrayList<>();
 
-        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.simple_list_item, data);
+        listItems.add("记账");
+
+        ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.simple_list_item, listItems);
 
         QMUIPopups.listPopup(getContext(),
                 QMUIDisplayHelper.dp2px(getContext(), 80),
                 QMUIDisplayHelper.dp2px(getContext(), 300),
-                adapter,
-                null)
+                adapter, new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position){
+                            case 0:
+                                RecordFragment fragment = new RecordFragment();
+                                Bundle args = new Bundle();
+                                args.putString(RecordFragment.ARGS_BANK,mBank);
+                                fragment.setArguments(args);
+                                startFragment(fragment);
+                                break;
+                        }
+                    }
+                })
                 .animStyle(QMUIPopup.ANIM_GROW_FROM_CENTER)
                 .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                 .arrow(false)
                 .shadow(true)
                 .offsetX(-QMUIDisplayHelper.dp2px(getContext(), 20))
                 .offsetYIfBottom(-QMUIDisplayHelper.dp2px(getContext(), 30))
-                .onDismiss(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        Toast.makeText(getContext(), "onDismiss", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .show(v);
     }
 

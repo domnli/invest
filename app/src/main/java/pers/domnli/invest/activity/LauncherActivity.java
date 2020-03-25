@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.baidu.mobstat.StatService;
 import com.qmuiteam.qmui.arch.QMUILatestVisit;
 
 import pers.domnli.invest.MainActivity;
@@ -24,5 +25,17 @@ public class LauncherActivity extends Activity {
         }
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StatService.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        StatService.onPause(this);
     }
 }

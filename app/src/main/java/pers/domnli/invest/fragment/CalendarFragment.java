@@ -138,6 +138,11 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
         startFragmentAndDestroyCurrent(new AddBankFragment());
     }
 
+    @OnClick(R.id.alarm_fl)
+    void onAlarm(View v){
+        startFragmentAndDestroyCurrent(new BillRemindFragment());
+    }
+
     @Override
     public void onCalendarOutOfRange(Calendar calendar) {
 
