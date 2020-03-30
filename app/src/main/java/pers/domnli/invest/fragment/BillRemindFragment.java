@@ -78,6 +78,18 @@ public class BillRemindFragment extends BaseFragment {
                 mBillingSection.addItemView(item, v -> toLoan(bank.getBank(),year,month,bank.getBillingDay()));
             }
 
+            if(remind.getDueBanks().size() == 0){
+                QMUICommonListItemView item = mGroupList.createItemView("无");
+                item.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                mDueSection.addItemView(item, null);
+            }
+
+            if(remind.getBillingBanks().size() == 0){
+                QMUICommonListItemView item = mGroupList.createItemView("无");
+                item.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                mBillingSection.addItemView(item, null);
+            }
+
             mDueSection.addTo(mGroupList);
             mBillingSection.addTo(mGroupList);
 

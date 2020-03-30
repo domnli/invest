@@ -25,6 +25,8 @@
 
         <service android:name=".notification.BillNotifyService" android:exported="false"/>
 
+        <receiver android:name=".notification.BillNotifyReceiver" android:exported="false"/>
+
     </application>
 
 

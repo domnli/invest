@@ -18,17 +18,19 @@ public class AlarmRegister {
     public static void register(Context context){
         alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(context,BillNotifyService.class);
-        alarmIntent = PendingIntent.getService(context,REQUEST_CODE,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//        Intent intent = new Intent(context,BillNotifyService.class);
+//        alarmIntent = PendingIntent.getService(context,REQUEST_CODE,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(context,BillNotifyReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
+//        calendar.set(Calendar.HOUR_OF_DAY, 9);
 
 
 //        if(Build.VERSION.SDK_INT > )
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 6*1000,
+                1*60*1000, alarmIntent);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,alarmIntent);
 //        }

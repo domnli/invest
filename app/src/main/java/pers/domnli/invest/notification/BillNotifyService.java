@@ -37,6 +37,9 @@ public class BillNotifyService extends IntentService {
             dueBank.append(bank.getBank()).append("、");
         }
 
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND));
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
         Intent mainAtyIntent = MainActivity.of(getApplicationContext(), BillRemindFragment.class);
