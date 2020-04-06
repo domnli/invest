@@ -11,6 +11,8 @@ import androidx.room.Room;
 import pers.domnli.invest.notification.AlarmRegister;
 import pers.domnli.invest.notification.NotificationRegister;
 import pers.domnli.invest.repository.local.AppDataBase;
+import pers.domnli.invest.repository.local.migration.Migration_1_2;
+import pers.domnli.invest.repository.local.migration.Migration_2_3;
 
 public class InvestApplication extends Application {
     private static AppDataBase mAppDataBase;
@@ -22,7 +24,8 @@ public class InvestApplication extends Application {
         QMUISwipeBackActivityManager.init(this);
 
         mAppDataBase = Room.databaseBuilder(getApplicationContext(),AppDataBase.class,"app_database.db")
-                .fallbackToDestructiveMigration()
+                .addMigrations(new Migration_1_2())
+                .addMigrations(new Migration_2_3())
                 .build();
 
         AlarmRegister.register(this);

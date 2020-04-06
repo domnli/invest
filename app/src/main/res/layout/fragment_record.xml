@@ -26,7 +26,6 @@
         <TextView
             android:id="@+id/current_merchant"
             style="@style/QDCommonDescription"
-            android:text="5094钟表首饰、5722电器、5732电子设备、5533汽配"
             android:gravity="center"/>
         <com.qmuiteam.qmui.widget.QMUIProgressBar
             android:id="@+id/circleProgressBar"
@@ -39,6 +38,41 @@
             app:qmui_progress_color="@color/qmui_config_color_red"
             app:qmui_stroke_width="18dp"
             app:qmui_type="type_circle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
+                android:layout_height="wrap_content"
+                android:text="已用额度："
+                android:gravity="right"
+                />
+            <TextView
+                android:id="@+id/useLoanTv"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
+                android:layout_height="wrap_content"
+                android:text="总额度："
+                android:gravity="right"
+                />
+            <TextView
+                android:id="@+id/quotaTv"
+                android:layout_width="0dp"
+                android:layout_weight="0.25"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
 
         <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
             android:id="@+id/groupListView"

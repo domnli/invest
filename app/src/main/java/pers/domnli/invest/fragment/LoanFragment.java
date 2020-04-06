@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,26 +90,27 @@ public class LoanFragment extends BaseFragment {
             mMonth = args.getInt(ARGS_MONTH);
             mDay = args.getInt(ARGS_DAY);
         }
+
         FrameLayout layout = (FrameLayout) LayoutInflater.from(getActivity()).inflate(R.layout.fragment_loan, null);
         ButterKnife.bind(this, layout);
         mVm = ViewModelProviders.of(this).get(LoanViewModel.class);
 
         initTopBar();
         initView();
-        observe();
         return layout;
     }
 
     @Override
-    protected void onViewCreated(@NonNull View rootView) {
-        super.onViewCreated(rootView);
-        rootView.post(()->{
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.post(()->{
             if(mBank == null || mYear == null || mMonth == null || mDay == null){
                 popBackStack();
             }else {
                 mVm.getBankLoanMonthly(mBank,mYear,mMonth);
             }
         });
+        observe();
     }
 
     private void initTopBar() {
@@ -171,28 +173,47 @@ public class LoanFragment extends BaseFragment {
         mQuotaItem = mGroupList.createItemView("总额度");
         mQuotaItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_NONE);
 
+        QMUICommonListItemView goToBillItem = mGroupList.createItemView("记账");
+        goToBillItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
 
         QMUIGroupListView.newSection(getContext())
                 .addItemView(mBillingDayItem,null)
                 .addItemView(mDueDayItem,null)
                 .addItemView(crtDayItem,null)
                 .addItemView(mQuotaItem,null)
+                .addItemView(goToBillItem, v -> {
+                    RecordFragment fragment = new RecordFragment();
+                    Bundle args = new Bundle();
+                    args.putString(RecordFragment.ARGS_BANK,mBank);
+                    fragment.setArguments(args);
+                    startFragment(fragment);
+                })
                 .addTo(mGroupList);
     }
 
     @SuppressLint("DefaultLocale")
     private String dateFormat(){
-        return String.format("%d年%d月", mYear,mMonth);
+        if(mBillingDayItem == null){
+            return null;
+        }
+        CharSequence text = mBillingDayItem.getDetailText();
+        if(text != null){
+            Integer billingDay = Integer.valueOf(text.toString());
+            return String.format("%d.%d.%s - %d.%d.%s", mMonth-1==0?mYear-1:mYear,mMonth-1==0?12:mMonth-1,billingDay,mYear,mMonth,billingDay);
+        }else{
+            return null;
+        }
     }
 
     private void observe(){
-        mVm.bankLiveData.observe(getViewLifecycleOwner(), bank -> {
+        mVm.bankLiveData.observe(getLazyViewLifecycleOwner(), bank -> {
             mBillingDayItem.setDetailText(bank.getBillingDay().toString());
             mDueDayItem.setDetailText(bank.getDueDay().toString());
             mQuotaItem.setDetailText(bank.getQuota().toString());
         });
 
-        mVm.loanMonthlyLiveData.observe(getViewLifecycleOwner(),loanMonthly -> {
+        mVm.loanMonthlyLiveData.observe(getLazyViewLifecycleOwner(),loanMonthly -> {
             mDateTv.setText(dateFormat());
             mLoanMonthly = loanMonthly;
             drawLoanMonthlyView();
@@ -204,6 +225,7 @@ public class LoanFragment extends BaseFragment {
             mRepaidCb.setChecked(false);
             mCardLayout.setAlpha(1f);
             mImgRepaid.setVisibility(View.GONE);
+            mEditor.setVisibility(View.VISIBLE);
             mLoanTv.setText("");
         }else{
             mLoanTv.setText(mLoanMonthly.getLoan());
@@ -270,7 +292,7 @@ public class LoanFragment extends BaseFragment {
         calendar.add(Calendar.MONTH,-1);
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH) + 1;
-        mDateTv.setText(dateFormat());
+//        mDateTv.setText(dateFormat());
 
         mVm.getBankLoanMonthly(mBank,mYear,mMonth);
     }
@@ -283,7 +305,7 @@ public class LoanFragment extends BaseFragment {
         calendar.add(Calendar.MONTH,1);
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH) + 1;
-        mDateTv.setText(dateFormat());
+//        mDateTv.setText(dateFormat());
 
         mVm.getBankLoanMonthly(mBank,mYear,mMonth);
     }
