@@ -293,6 +293,7 @@ public class RecordFragment extends BaseFragment {
         public SerialDialogBuilder(Context context,String description,String money) {
             super(context);
             mContext = context;
+            this.setCanceledOnTouchOutside(false);
             this.description = description;
             this.money = money;
         }
