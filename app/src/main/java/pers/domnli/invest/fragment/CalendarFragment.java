@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
@@ -59,6 +61,12 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
     @BindView(R.id.fl_current)
     FrameLayout mFlCurrent;
 
+    @BindView(R.id.quota_tv)
+    TextView mTextQuota;
+
+    @BindView(R.id.today_used_tv)
+    TextView mTextMoney;
+
     private int mYear;
     private int mCurDay;
     private CalendarViewModel mVm;
@@ -74,10 +82,16 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
         mBankMap = new HashMap<>();
 
         initView();
-        observe();
         mVm.getAllBank();
-
+        mVm.getTotalQuota();
+        mVm.getTodayUsed();
         return layout;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        observe();
     }
 
     private void initView(){
@@ -112,6 +126,12 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
     private void observe(){
         mVm.banksLiveData.observe(getViewLifecycleOwner(), banks -> {
             initData(banks);
+        });
+        mVm.quotaTotal.observe(getLazyViewLifecycleOwner(),quota->{
+            mTextQuota.setText(quota);
+        });
+        mVm.todayUsed.observe(getLazyViewLifecycleOwner(),todayUsedMoney->{
+            mTextMoney.setText(todayUsedMoney);
         });
     }
 

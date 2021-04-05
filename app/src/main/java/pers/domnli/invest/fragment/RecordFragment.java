@@ -55,6 +55,12 @@ public class RecordFragment extends BaseFragment {
     @BindView(R.id.quotaTv)
     TextView mQuotaTv;
 
+    @BindView(R.id.prevLoanTv)
+    TextView mPrevLoanTv;
+
+    @BindView(R.id.currentLoanTv)
+    TextView mCurrentLoanTv;
+
     @BindView(R.id.groupListView)
     QMUIGroupListView mGroupList;
 
@@ -137,7 +143,7 @@ public class RecordFragment extends BaseFragment {
             }
         });
 
-        QMUICommonListItemView m1kItem = mGroupList.createItemView("随机700-999金额");
+        QMUICommonListItemView m1kItem = mGroupList.createItemView("随机800-999金额");
         m1kItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
         QMUICommonListItemView m4kItem = mGroupList.createItemView("随机2000-4000金额");
@@ -150,10 +156,16 @@ public class RecordFragment extends BaseFragment {
         mBillItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
         QMUIGroupListView.newSection(getContext())
-                .addItemView(m1kItem,generateItemClickListener(700,900))
+                .addItemView(m1kItem,generateItemClickListener(800,900))
                 .addItemView(m4kItem,generateItemClickListener(2000,4000))
                 .addItemView(m10kItem,generateItemClickListener(10000,13000))
-                .addItemView(mBillItem,null)
+                .addItemView(mBillItem, v -> {
+                    BillingSerialFragment fragment = new BillingSerialFragment();
+                    Bundle args = new Bundle();
+                    args.putString(RecordFragment.ARGS_BANK,mBank);
+                    fragment.setArguments(args);
+                    startFragment(fragment);
+                })
                 .addTo(mGroupList);
     }
 
@@ -281,6 +293,8 @@ public class RecordFragment extends BaseFragment {
             mCircleProgressBar.setProgress(proportion.getUseProportion(),true);
             mUseLoanTv.setText(proportion.getNoPaidLoan().toString());
             mQuotaTv.setText(proportion.getQuota().toString());
+            mPrevLoanTv.setText(proportion.getPrevPeriodLoan().toString());
+            mCurrentLoanTv.setText(proportion.getCurrentPeriodLoan().toString());
         });
     }
 
@@ -294,6 +308,7 @@ public class RecordFragment extends BaseFragment {
             super(context);
             mContext = context;
             this.setCanceledOnTouchOutside(false);
+            this.setCancelable(false);
             this.description = description;
             this.money = money;
         }

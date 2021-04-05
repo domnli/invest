@@ -1,7 +1,5 @@
 package pers.domnli.invest.repository.entity;
 
-import java.math.BigDecimal;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

@@ -121,6 +121,44 @@
             />
         </com.qmuiteam.qmui.layout.QMUIFrameLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/quota_label_tv"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="总额度："
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/quota_tv"
+            android:layout_toRightOf="@id/quota_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00">
+
+        </TextView>
+        <TextView
+            android:id="@+id/today_used_label_tv"
+            android:layout_toRightOf="@id/quota_tv"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="今日已用："
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/today_used_tv"
+            android:layout_toRightOf="@id/today_used_label_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            >
+
+        </TextView>
+    </RelativeLayout>
 
     <com.haibin.calendarview.CalendarLayout
         android:id="@+id/calendarLayout"

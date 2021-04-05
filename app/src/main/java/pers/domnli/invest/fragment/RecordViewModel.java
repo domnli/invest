@@ -44,10 +44,11 @@ public class RecordViewModel extends ViewModel {
 
             // 上期未还 + 当期账单总额
             List<LoanMonthly> loans = dao.findNonPaidLoanBefore(bankName,month);
-            BigDecimal noPaidLoan = new BigDecimal(0);
+
+            BigDecimal prevPeriodLoan = new BigDecimal(0);
             for (LoanMonthly loan :
                     loans) {
-                noPaidLoan = noPaidLoan.add(new BigDecimal(loan.getLoan()));
+                prevPeriodLoan = prevPeriodLoan.add(new BigDecimal(loan.getLoan()));
             }
 
             List<BillingSerial> serials = new ArrayList<>();
@@ -61,6 +62,7 @@ public class RecordViewModel extends ViewModel {
                 serials.addAll(serialDayAfter);
                 serials.addAll(serialDayBefore);
 
+
             }else{
                 // 上月billingDay 至 当月billingDay
                 calendar.add(Calendar.MONTH,-1);
@@ -72,17 +74,21 @@ public class RecordViewModel extends ViewModel {
                 serials.addAll(serialDayBefore);
             }
 
-
+            BigDecimal currentPeriodLoan = BigDecimal.ZERO;
             for (BillingSerial serial:
                  serials) {
-                noPaidLoan = noPaidLoan.add(new BigDecimal(serial.getMoney()));
+                currentPeriodLoan = currentPeriodLoan.add(new BigDecimal(serial.getMoney()));
             }
+
+            BigDecimal noPaidLoan = prevPeriodLoan.add(currentPeriodLoan);
 
             BigDecimal last = noPaidLoan.divide(new BigDecimal(bank.getQuota()),2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100));
 
             Proportion proportion = new Proportion();
             proportion.setQuota(new BigDecimal(bank.getQuota()));
             proportion.setNoPaidLoan(noPaidLoan);
+            proportion.setPrevPeriodLoan(prevPeriodLoan);
+            proportion.setCurrentPeriodLoan(currentPeriodLoan);
             proportion.setUseProportion(last.toBigInteger().intValue());
             proportionLiveData.postValue(proportion);
         });
@@ -97,6 +103,10 @@ public class RecordViewModel extends ViewModel {
     class Proportion{
         private BigDecimal quota;
         private BigDecimal noPaidLoan;
+        /** 上期未还 */
+        private BigDecimal prevPeriodLoan;
+        /** 本期未还 */
+        private BigDecimal currentPeriodLoan;
         private Integer useProportion;
 
         public BigDecimal getQuota() {
@@ -121,6 +131,22 @@ public class RecordViewModel extends ViewModel {
 
         public void setUseProportion(Integer useProportion) {
             this.useProportion = useProportion;
+        }
+
+        public BigDecimal getPrevPeriodLoan() {
+            return prevPeriodLoan;
+        }
+
+        public void setPrevPeriodLoan(BigDecimal prevPeriodLoan) {
+            this.prevPeriodLoan = prevPeriodLoan;
+        }
+
+        public BigDecimal getCurrentPeriodLoan() {
+            return currentPeriodLoan;
+        }
+
+        public void setCurrentPeriodLoan(BigDecimal currentPeriodLoan) {
+            this.currentPeriodLoan = currentPeriodLoan;
         }
     }
 

@@ -51,6 +51,15 @@ public interface InvestDao {
     @Query("select * from billingserial where bank=:bank and year=:year and month=:month and day >:day")
     List<BillingSerial> findSerialDayAfter(String bank,Integer year,Integer month,Integer day);
 
+    @Query("select * from billingserial where bank=:bank order by id desc limit :limit offset :offset ")
+    List<BillingSerial> findBillingSerial(String bank,Integer limit, Integer offset);
+
     @Delete
     void delete(LoanMonthly loanMonthly);
+
+    @Query("select sum(b.quota) from bank b ")
+    Integer getTotalQuota();
+
+    @Query("select sum(b.money) from billingserial b where year=:year and month=:month and day =:day")
+    Float getUsedIn(Integer year,Integer month,Integer day);
 }
