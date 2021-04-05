@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +21,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,7 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
     private int mCurDay;
     private CalendarViewModel mVm;
     private Map<String,Bank> mBankMap;
+    private QMUIPopup mPopUp;
 
 
     @Override
@@ -189,13 +192,13 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
 
         ArrayAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.simple_list_item, listItems);
 
-        QMUIPopups.listPopup(getContext(),
+        mPopUp = QMUIPopups.listPopup(getContext(),
                 QMUIDisplayHelper.dp2px(getContext(), 80),
                 QMUIDisplayHelper.dp2px(getContext(), 300),
                 adapter, new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 startFragmentAndDestroyCurrent(new AddBankFragment());
                                 break;
@@ -204,6 +207,7 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
                                 break;
                             case 2:
                                 backup();
+                                mPopUp.dismiss();
                                 break;
                         }
                     }
@@ -230,11 +234,11 @@ public class CalendarFragment extends BaseFragment implements CalendarView.OnCal
 
             String json = new GsonBuilder().setPrettyPrinting().create().toJson(bu);
             try {
-                new FileHelper(getContext()).save("backup.json",json);
+                new FileHelper(getContext()).save("backup_"+ new Date().getTime() +".json",json);
+                mCalendarView.post(()->Toast.makeText(getActivity(), "已备份完成，备份文件存储于本地", Toast.LENGTH_SHORT).show());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
 
